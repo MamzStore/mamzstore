@@ -57,6 +57,16 @@
   text-align: center;
   border-radius: 20px;
 }
+.kotak1v {
+  width: 200px;
+  height: 500px;
+  backdrop-filter: #99FFFF;
+  color: black;
+  page-break-inside: 70px;
+  margin-top: 9px;
+  border-radius: 20px;
+}
+
 .kotak1 img {
   width: 200px;
   height: 200px;
@@ -119,6 +129,22 @@
 
 .close:hover,
 .close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.closes {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 7px;
+  right: 10px;
+}
+
+.closes:hover,
+.closes:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
