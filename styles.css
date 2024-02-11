@@ -149,14 +149,17 @@
   text-decoration: none;
   cursor: pointer;
 }
-.kotak1 {
+.kotak3 {
   width: 200px;
   height: 550px;
   background-color: #99FFFF;
   color: black;
   padding: 70px;
   margin-top: 9px;
-  text-align: center;
   border-radius: 20px;
+}
+.kotak3 h2{
+  padding-left: 10px;
+  text-align: center;
 }
 }
