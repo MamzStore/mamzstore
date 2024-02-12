@@ -18,3 +18,27 @@ if(isset($_POST['submit'])) {
     echo "USERNAME ATAU KATA SANDI SALAH";
 }
 ?>
+----admin-----
+<?php
+session_start();
+if ($_POST['username'] === 'admin' && $_POST['password'] === '123') {
+  $_SESSION['loggedin'] = true;
+  header('Location: config.html');
+} else {
+  echo 'Invalid login credentials.';
+}
+-----imam-----
+if ($_POST['username'] === 'imam' && $_POST['password'] === '123') {
+  $_SESSION['loggedin'] = true;
+  header('Location: config.html');
+} else {
+  echo 'Invalid login credentials.';
+}
+?>
+<?php
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+  header('Location: masuk.php');
+  exit;
+}
+?>

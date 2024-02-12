@@ -8,6 +8,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     window.location.href = 'index.html';
   }
 if (username === 'imam' && password === '12345') {
-    window.location.href = 'config.html';
+    window.location.href = 'pgwniawpptiqbaoqdxwl.html';
   }
+ if (username === 'imamsaputra' && password === '12345') {
+    window.location.href = 'pgwniawpptiqbaoqdxwl.html';
+  } 
 });
