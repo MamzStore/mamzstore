@@ -15,6 +15,6 @@ if(isset($_POST['submit'])) {
         }
     }
 
-    echo "Login failed!";
+    echo "USERNAME ATAU KATA SANDI SALAH";
 }
 ?>
