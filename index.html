@@ -1,119 +1,255 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Selamat Datang</title>
+    <title>MAMZ PAY</title>
     <style>
-        /* Reset CSS */
-        * {
-            box-sizing: border-box;
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
             margin: 0;
+        }
+
+        #app, #loginPage {
+            text-align: center;
+            border: 2px solid #333;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            width: 300px;
+            display: none;
+        }
+
+        #loginPage {
+            display: block;
+        }
+
+        #controls input, #controls select, #loginPage input {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+            width: calc(100% - 24px);
+        }
+
+        #controls button, #loginPage button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        #transactions {
+            margin-top: 20px;
+        }
+
+        #transactions ul {
+            list-style-type: none;
             padding: 0;
         }
 
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333;
-            background-color: #f5f5f5;
+        #transactions li.credit {
+            color: green;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px;
+        #transactions li.debit {
+            color: red;
         }
 
-        /* Header Styles */
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 40px;
+        #profile {
+            margin-top: 20px;
         }
 
-        header h1 {
-            margin: 0;
-            font-size: 36px;
-        }
-
-        /* Greeting Styles */
-        .greeting {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        /* Content Styles */
-        .content {
-            background-color: white;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
-        }
-
-        .content h2 {
-            font-size: 24px;
-            margin-top: 0;
-        }
-
-        .content p {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        /* Footer Styles */
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-
-        footer p {
-            margin: 0;
-            font-size: 14px;
+        #adminControls {
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>MamzStore</h1>
-    </header>
-
-    <div class="container">
-        <div class="greeting">
-            <script>
-                const currentHour = new Date().getHours();
-                let greeting;
-
-                if (currentHour >= 5 && currentHour < 12) {
-                    greeting = "Selamat Pagi!";
-                } else if (currentHour >= 12 && currentHour < 18) {
-                    greeting = "Selamat Siang!";
-                } else {
-                    greeting = "Selamat Malam!";
-                }
-
-                document.write(greeting);
-            </script>
+    <div id="loginPage">
+        <h1>MAMZ PAY Login</h1>
+        <input type="text" id="loginUsername" placeholder="Nama Pengguna">
+        <input type="password" id="loginPassword" placeholder="Kata Sandi">
+        <button id="loginButton">Masuk</button>
+        <p id="loginMessage" style="color: red;"></p>
+    </div>
+    
+    <div id="app">
+        <h1>MAMZ PAY</h1>
+        <div id="wallet">
+            <p>Saldo Saat Ini: Rp <span id="balance">0</span></p>
         </div>
-
-        <div class="content">
-            <h2>SERVER LAG (20/6/2024)</h2>
-            <br>
-            <p>Saat ini server <b>MamzStore</b> sedang mengalami lag. Kami akan segera memperbaikinya.</p>
-            <p>23.53 WIB</p>
+        <div id="controls">
+            <input type="number" id="amount" placeholder="Masukkan jumlah">
+            <button id="makePayment">Bayar</button>
+            <select id="transferTo">
+                <option value="" disabled selected>Pilih penerima</option>
+                <option value="admin">Admin</option>
+                <option value="Bob">Bob</option>
+            </select>
+            <button id="transferFunds">Transfer Dana</button>
+        </div>
+        <div id="transactions">
+            <h2>Riwayat Transaksi</h2>
+            <ul id="transactionList"></ul>
+        </div>
+        <div id="profile">
+            <h2>Profil</h2>
+            <p>Nama: <span id="userName">Pengguna</span></p>
+            <button id="editProfile">Edit Profil</button>
+            <div id="editProfileForm" style="display: none;">
+                <input type="text" id="newName" placeholder="Masukkan nama baru">
+                <button id="saveProfile">Simpan</button>
+            </div>
+        </div>
+        <div id="adminControls" style="display: none;">
+            <h2>Kontrol Admin</h2>
+            <select id="userSelect">
+                <option value="" disabled selected>Pilih pengguna</option>
+                <option value="admin">admin</option>
+                <option value="imam">imam</option>
+                <option value="user2">user2</option>
+            </select>
+            <input type="number" id="adminAmount" placeholder="Masukkan jumlah">
+            <button id="setBalance">Atur Saldo</button>
         </div>
     </div>
+    <script>
+        // Admin managed credentials
+        const adminCredentials = [
+            { username: 'admin', password: 'admin123' },
+            { username: 'imam', password: 'imam123' },
+            { username: 'user2', password: 'password2' }
+        ];
 
-    <footer>
-        <p>&copy; 2024 Selamat Datang. Hak cipta dilindungi undang-undang.</p>
-    </footer>
+        let currentUser = null;
+        const balanceElement = document.getElementById('balance');
+        const amountInput = document.getElementById('amount');
+        const makePaymentButton = document.getElementById('makePayment');
+        const transferToSelect = document.getElementById('transferTo');
+        const transferFundsButton = document.getElementById('transferFunds');
+        const transactionList = document.getElementById('transactionList');
+        const userNameElement = document.getElementById('userName');
+        const editProfileButton = document.getElementById('editProfile');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const newNameInput = document.getElementById('newName');
+        const saveProfileButton = document.getElementById('saveProfile');
+        const adminControls = document.getElementById('adminControls');
+        const userSelect = document.getElementById('userSelect');
+        const adminAmount = document.getElementById('adminAmount');
+        const setBalanceButton = document.getElementById('setBalance');
+
+        const loginPage = document.getElementById('loginPage');
+        const appPage = document.getElementById('app');
+        const loginUsername = document.getElementById('loginUsername');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginButton = document.getElementById('loginButton');
+        const loginMessage = document.getElementById('loginMessage');
+
+        loginButton.addEventListener('click', () => {
+            const username = loginUsername.value;
+            const password = loginPassword.value;
+            const user = adminCredentials.find(user => user.username === username && user.password === password);
+
+            if (user) {
+                currentUser = user.username;
+                loginPage.style.display = 'none';
+                appPage.style.display = 'block';
+                userNameElement.textContent = user.username;
+                loginMessage.textContent = '';
+                loadBalance();
+
+                if (user.username === 'admin') {
+                    adminControls.style.display = 'block';
+                } else {
+                    adminControls.style.display = 'none';
+                }
+            } else {
+                loginMessage.textContent = 'Nama pengguna atau kata sandi salah!';
+            }
+        });
+
+        makePaymentButton.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            if (amount > 0 && amount <= getBalance()) {
+                updateBalance(-amount);
+                addTransaction(`Bayar Rp ${amount.toFixed(2)}`, "debit");
+                updateBalanceElement();
+            } else {
+                alert('Masukkan jumlah yang valid atau pastikan saldo mencukupi!');
+            }
+            amountInput.value = '';
+        });
+
+        transferFundsButton.addEventListener('click', () => {
+            const amount = parseFloat(amountInput.value);
+            const recipient = transferToSelect.value;
+            if (amount > 0 && amount <= getBalance() && recipient) {
+                updateBalance(-amount);
+                addTransaction(`Transfer Rp ${amount.toFixed(2)} ke ${recipient}`, "debit");
+                updateBalanceElement();
+            } else {
+                alert('Masukkan jumlah yang valid, pastikan saldo mencukupi, dan pilih penerima!');
+            }
+            amountInput.value = '';
+        });
+
+        editProfileButton.addEventListener('click', () => {
+            editProfileForm.style.display = 'block';
+        });
+
+        saveProfileButton.addEventListener('click', () => {
+            const newName = newNameInput.value;
+            if (newName) {
+                userNameElement.textContent = newName;
+                editProfileForm.style.display = 'none';
+                newNameInput.value = '';
+            } else {
+                alert('Masukkan nama yang valid!');
+            }
+        });
+
+        setBalanceButton.addEventListener('click', () => {
+            const selectedUser = userSelect.value;
+            const amount = parseFloat(adminAmount.value);
+            if (selectedUser && amount >= 0) {
+                localStorage.setItem(`balance_${selectedUser}`, amount.toFixed(2));
+                if (selectedUser === currentUser) {
+                    loadBalance();
+                }
+                alert(`Saldo untuk ${selectedUser} diatur menjadi Rp ${amount.toFixed(2)}`);
+            } else {
+                alert('Pilih pengguna dan masukkan jumlah yang valid!');
+            }
+            adminAmount.value = '';
+        });
+
+        function updateBalance(amount) {
+            const balance = getBalance() + amount;
+            localStorage.setItem(`balance_${currentUser}`, balance.toFixed(2));
+        }
+
+        function getBalance() {
+            return parseFloat(localStorage.getItem(`balance_${currentUser}`)) || 0;
+        }
+
+        function loadBalance() {
+            balanceElement.textContent = getBalance().toFixed(2);
+        }
+
+        function updateBalanceElement() {
+            balanceElement.textContent = getBalance().toFixed(2);
+        }
+
+        function addTransaction(description, type) {
+            const transactionItem = document.createElement('li');
+            transactionItem.textContent = description;
+            transactionItem.className = type;
+            transactionList.appendChild(transactionItem);
+        }
+    </script>
 </body>
 </html>
